@@ -1,0 +1,79 @@
+[OSEv3:children]
+masters
+nodes
+etcd
+#glusterfs
+
+[OSEv3:vars]
+# if your target hosts are Fedora uncomment this
+#ansible_python_interpreter=/usr/bin/python3
+openshift_deployment_type=openshift-enterprise
+openshift_portal_net=172.30.0.0/16
+os_firewall_use_firewalld=true
+
+# localhost likely doesn't meet the minimum requirements
+openshift_disable_check=disk_availability,memory_availability
+
+openshift_enable_service_catalog=false
+template_service_broker_install=false
+ansible_service_broker_install=false
+ansible_service_broker_remove=true
+template_service_broker_remove=true
+openshift_service_catalog_remove=true
+
+debug_level=2
+openshift_release="3.11"
+openshift_master_cluster_hostname=master.uocs.lan.toborek.pl
+openshift_master_default_subdomain=app.uocs.lan.toborek.pl
+
+oreg_auth_user="7088399|quicklab"
+oreg_auth_password="eyJhbGciOiJSUzUxMiJ9.eyJzdWIiOiJmNDk4MWNiMTc5NGI0NDIzYWE1YTMzZGNlZGMwMjhmZCJ9.hL1Kl3aCA6bDDdMXt0zTvs3pqQiBJD1gsph_gchc0NOzR3G8o9u0yi4Vemn-cw-078bNBd3IVYLWiPz7EY7TD_xb1MIDCoSDjBFbTODHzqmxk6pj6ii4mLYJArTHIANY62dST1X1Eddx2K5yhJz6oUVS13hTfOru-WFdH0qwje9350F4uVOik9nRuEga9-f18DPsF1RLu6TFfEUI7_m8jKb3P80ZduZ2ATL_sPVBwSbiEV25dqB8DriNAZDaI_UB9nuW3OG5eOAILgmiaD_9X9xy5tXk3iGum4DHc-58NTqhR5_aUSNINcFpC_zkXF072WyMz8s1f3XNnOxDcOpS4E0JEtbQkCaeXDw6qAtWoK_cNVEkcRCao06bwHje9lG72QNTNTS_kZ11nPsMlK6ncrhPspASfkw1ZroE8Jlky58YCkE9CHwjPTPLB8zEXd8Ur_dizIK8LrRCLVa5ee6BCfIO6Ak1VaD8701yvE8CyWdVPqLSGnSWxk20ZyDdvZa__gX5_ibJeoXngU6eA-sW-MVeHP6WVFT6R92m-4Rk9gAse6TASCIzuyPzm7BdOlLUwqrOPTBnLnmkiQ1dMfYPTGa43o2Ya7Lx-jDZsNSvbTW3TCryu0qBiQ6Np2brevq2SQ7tz5YjYdAZtRHp23OyAWiSqcMEjb8oue844Ra5UTs"
+
+openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
+openshift_master_htpasswd_file=/root/.ht
+
+openshift_node_groups=[{'name': 'node-config-all-in-one', 'labels': ['node-role.kubernetes.io/master=true', 'node-role.kubernetes.io/infra=true', 'node-role.kubernetes.io/compute=true']}]
+
+openshift_storage_glusterfs_version=v3.11.5
+openshift_storage_glusterfs_block_version=v3.11.5
+openshift_storage_glusterfs_heketi_version=v3.11.5
+openshift_storage_glusterfs_registry_version=v3.11.5
+openshift_storage_glusterfs_registry_block_version=v3.11.5
+openshift_storage_glusterfs_registry_heketi_version =v3.11.5
+openshift_storage_glusterfs_image=registry.access.redhat.com/rhgs3/rhgs-server-rhel7:v3.11.5
+openshift_storage_glusterfs_block_image=registry.access.redhat.com/rhgs3/rhgs-gluster-block-prov-rhel7:v3.11.5
+openshift_storage_glusterfs_heketi_image=registry.access.redhat.com/rhgs3/rhgs-volmanager-rhel7:v3.11.5
+openshift_storage_glusterfs_s3_server_image=registry.access.redhat.com/rhgs3/rhgs-s3-server-rhel7:v3.11.5
+
+openshift_storage_glusterfs_wipe=true
+openshift_storage_glusterfs_heketi_wipe=true
+openshift_storage_glusterfs_namespace=glusterfs
+openshift_storage_glusterfs_storageclass=true
+openshift_storage_glusterfs_storageclass_default=false
+openshift_storage_glusterfs_block_deploy=true
+openshift_storage_glusterfs_block_host_vol_create=true
+openshift_storage_glusterfs_block_host_vol_size=6
+openshift_storage_glusterfs_block_storageclass=true
+openshift_storage_glusterfs_block_storageclass_default=false
+openshift_storage_glusterfs_is_native=true
+openshift_storage_glusterfs_heketi_is_native=true
+openshift_storage_glusterfs_heketi_executor=ssh
+openshift_storage_glusterfs_heketi_ssh_port=22
+openshift_storage_glusterfs_heketi_ssh_user=root
+openshift_storage_glusterfs_heketi_ssh_sudo=false
+openshift_storage_glusterfs_heketi_ssh_keyfile="/root/.ssh/id_rsa"
+
+[masters]
+uocs0.lan.toborek.pl
+
+[etcd]
+uocs0.lan.toborek.pl
+
+[nodes]
+# openshift_node_group_name should refer to a dictionary with matching key of name in list openshift_node_groups.
+uocs0.lan.toborek.pl openshift_node_group_name="node-config-all-in-one"
+
+#[glusterfs]
+#gluster1.allinone glusterfs_ip=192.168.122.130 glusterfs_zone=1 glusterfs_devices='[ "/dev/vdc" ]'
+#gluster2.allinone glusterfs_ip=192.168.122.177 glusterfs_zone=2 glusterfs_devices='[ "/dev/vdc" ]'
+#gluster3.allinone glusterfs_ip=192.168.122.6   glusterfs_zone=3 glusterfs_devices='[ "/dev/vdc" ]'
